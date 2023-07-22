@@ -33,6 +33,10 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 sudo apt-get install containerd.io
+# Fix if cri is disabled
+sudo sed -i 's/^disabled_plugins = \["cri"\]/#&/' /etc/containerd/config.toml
+sudo systemctl enable containerd
+sudo systemctl start containerd
 
 
 # Install latest kubeadm, kubelet, and kubectl
@@ -47,18 +51,18 @@ sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 # Run kubeadm init
 # https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/
-kubeadm init --apiserver-advertise-address=$(hostname -I | awk '{print $1}')
-
-
-# Untaint the Master Node
-# https://stackoverflow.com/questions/43147941/allow-scheduling-of-pods-on-kubernetes-master
-kubectl taint nodes --all node-role.kubernetes.io/master-
+sudo kubeadm init --apiserver-advertise-address=$(hostname -I | awk '{print $1}')
 
 
 # Make kubectl work for non root user:
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+# Untaint the Master Node
+# https://stackoverflow.com/questions/43147941/allow-scheduling-of-pods-on-kubernetes-master
+kubectl taint nodes --all node-role.kubernetes.io/master-
 
 
 # Install the network add-on:
