@@ -36,15 +36,13 @@ sudo apt-get install containerd.io
 
 
 # Install latest kubeadm, kubelet, and kubectl
-# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-focal main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/kubernetes-xenial.gpg
+sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+sudo apt update
+sudo apt install kubeadm kubelet kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 
 # Run kubeadm init
