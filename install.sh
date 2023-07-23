@@ -44,7 +44,7 @@ sudo systemctl restart containerd
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/kubernetes-xenial.gpg
 sudo apt-add-repository -y "deb http://apt.kubernetes.io/ kubernetes-xenial main"
 sudo apt update
-sudo apt -y install kubeadm kubelet kubectl
+sudo apt -y install kubeadm=1.26.6 kubelet=1.26.6 kubectl=1.26.6
 sudo apt-mark hold kubelet kubeadm kubectl
 sudo swapoff -a
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
@@ -61,10 +61,10 @@ sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
-seconds=30
+seconds=10
+sudo systemctl restart containerd
 echo Sleeping for $seconds seconds.
 sleep $seconds
-sudo systemctl restart containerd
 
 
 # fixing kubectl tab completion
