@@ -37,6 +37,7 @@ sudo apt-get install containerd.io
 sudo sed -i 's/^disabled_plugins = \["cri"\]/#&/' /etc/containerd/config.toml
 sudo systemctl enable containerd
 sudo systemctl start containerd
+sudo systemctl restart containerd
 
 
 # Install latest kubeadm, kubelet, and kubectl
@@ -56,7 +57,7 @@ sudo kubeadm init --apiserver-advertise-address=$(hostname -I | awk '{print $1}'
 
 # Make kubectl work for non root user:
 mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
