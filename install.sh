@@ -72,8 +72,6 @@ sleep $seconds
 # fixing kubectl tab completion and alias for user doing installation:
 echo 'source <(kubectl completion bash)' >>~/.bashrc
 echo 'alias k=kubectl' >>~/.bashrc
-source ~/.bashrc
-
 
 
 # Install the network add-on:
@@ -84,3 +82,9 @@ kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/we
 # Untaint the Master Node
 # https://stackoverflow.com/questions/43147941/allow-scheduling-of-pods-on-kubernetes-master
 kubectl taint nodes `hostname` node-role.kubernetes.io/control-plane-
+
+
+# tip to enable kubectl tab completion
+echo You still need to log out and back in or run:
+echo source ~/.bashrc
+echo to enable kubectl completion for bash.
