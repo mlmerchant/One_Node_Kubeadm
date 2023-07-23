@@ -19,6 +19,11 @@ EOF
 sudo sysctl --system
 
 
+# Disabling SWAP
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+
 # Install containerd
 # https://docs.docker.com/engine/install/ubuntu/
 sudo mkdir -p /etc/apt/keyrings
@@ -46,8 +51,6 @@ sudo apt-add-repository -y "deb http://apt.kubernetes.io/ kubernetes-xenial main
 sudo apt update
 sudo apt -y install kubeadm=1.26.6-00 kubelet=1.26.6-00 kubectl=1.26.6-00
 sudo apt-mark hold kubelet kubeadm kubectl
-sudo swapoff -a
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 
 # Run kubeadm init
@@ -55,7 +58,7 @@ sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 sudo kubeadm init --apiserver-advertise-address=$(hostname -I | awk '{print $1}')
 
 
-# Make kubectl work for non root user:
+# Make kubectl work for non-root user doing installation:
 mkdir -p $HOME/.kube
 sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
@@ -66,10 +69,11 @@ echo Sleeping for $seconds seconds.
 sleep $seconds
 
 
-# fixing kubectl tab completion
+# fixing kubectl tab completion and alias for user doing installation:
 echo 'source <(kubectl completion bash)' >>~/.bashrc
+echo 'alias k=kubectl' >>~/.bashrc
 source ~/.bashrc
-alias k=kubectl
+
 
 
 # Install the network add-on:
@@ -80,6 +84,3 @@ kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/we
 # Untaint the Master Node
 # https://stackoverflow.com/questions/43147941/allow-scheduling-of-pods-on-kubernetes-master
 kubectl taint nodes `hostname` node-role.kubernetes.io/control-plane-
-
-
-
