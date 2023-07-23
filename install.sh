@@ -39,8 +39,17 @@ echo \
 sudo apt-get update
 sudo apt-get install containerd.io=1.6.15-1
 sudo apt-mark hold containerd.io
-# Fix if cri is disabled
-sudo sed -i 's/^disabled_plugins = \["cri"\]/#&/' /etc/containerd/config.toml
+
+
+# Fix issue with cgroups and disabled cni plugins for Ubuntu 22.04
+https://github.com/kubernetes/kubernetes/files/8948623/correct_config.txt
+cd  /etc/containerd
+sudo wget https://github.com/kubernetes/kubernetes/files/8948623/correct_config.txt
+sudo rm config.toml
+sudo mv correct_config.txt config.toml
+
+
+# Start containerd
 sudo systemctl enable containerd
 sudo systemctl start containerd
 sudo systemctl restart containerd
