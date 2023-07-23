@@ -38,6 +38,7 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 sudo apt-get install containerd.io=1.6.15
+sudo apt-mark hold containerd.io
 # Fix if cri is disabled
 sudo sed -i 's/^disabled_plugins = \["cri"\]/#&/' /etc/containerd/config.toml
 sudo systemctl enable containerd
