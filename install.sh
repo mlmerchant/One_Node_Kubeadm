@@ -61,7 +61,7 @@ sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
-seconds=30
+seconds=60
 echo Sleeping for $seconds seconds.
 sleep $seconds
 
