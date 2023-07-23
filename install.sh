@@ -67,6 +67,12 @@ echo Sleeping for 2 minutes.
 sleep 120
 
 
+# fixing kubectl tab completion
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+source ~/.bashrc
+alias k=kubectl
+
+
 # Install the network add-on:
 # https://www.weave.works/docs/net/latest/kubernetes/kube-addon/
 kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
