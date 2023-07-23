@@ -77,15 +77,7 @@ echo 'alias k=kubectl' >>~/.bashrc
 
 # Install the weavenet network add-on:
 # https://www.weave.works/docs/net/latest/kubernetes/kube-addon/
-# kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
-
-
-#Install calico network add-on
-# https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-
-kubectl taint nodes --all node-role.kubernetes.io/master-
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
 
 
 # Untaint the Master Node
