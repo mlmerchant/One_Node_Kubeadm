@@ -1,6 +1,8 @@
 #!/bin/bash
 # Install a single node kubernetes cluster using kubeadm on Ubuntu 22.04
 
+master=linman
+
 # Forwrding IPv4 and letting iptables see bridged traffic
 # https://kubernetes.io/docs/setup/production-environment/container-runtimes/
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
@@ -61,11 +63,18 @@ sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
-# Untaint the Master Node
-# https://stackoverflow.com/questions/43147941/allow-scheduling-of-pods-on-kubernetes-master
-kubectl taint nodes --all node-role.kubernetes.io/master-
+echo Sleeping for 2 minutes.
+sleep 120
 
 
 # Install the network add-on:
 # https://www.weave.works/docs/net/latest/kubernetes/kube-addon/
 kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+
+# Untaint the Master Node
+# https://stackoverflow.com/questions/43147941/allow-scheduling-of-pods-on-kubernetes-master
+kubectl taint nodes $master node-role.kubernetes.io/control-plane-
+
+
+
