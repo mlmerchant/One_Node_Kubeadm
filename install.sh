@@ -42,7 +42,7 @@ sudo apt-mark hold containerd.io
 
 
 # Fix issue with cgroups and disabled cni plugins for Ubuntu 22.04
-https://github.com/kubernetes/kubernetes/files/8948623/correct_config.txt
+# https://github.com/kubernetes/kubernetes/issues/110177
 cd  /etc/containerd
 sudo wget https://github.com/kubernetes/kubernetes/files/8948623/correct_config.txt
 sudo rm config.toml
