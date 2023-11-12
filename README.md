@@ -38,7 +38,8 @@ source ~/.bashrc
 This script sets up a single node Kubernetes cluster. The master node in this setup is untainted, allowing pods to be scheduled on it. This is not a recommended setup for a production environment, but it can be useful for learning, testing or development purposes.
 
 To Install the Dashboard, follow these steps:
-```
+
+```text
 1. If using VirtualBox ensure the VM is configured to Bridge Networking (not NAT).
 2. Perform a apt-get update and upgrade.
 3. Install, enable, and start sshd.
@@ -48,7 +49,6 @@ To Install the Dashboard, follow these steps:
 7. Change the dashboard SVC to a NodeIP.
 8. Run the get-token.sh for the auth token needed to log into the dashboard.
 9. Go in the browser to the Node's ip and external port assigned for kubernetes-dashboard svc.
-
 ```
 
 ## Disclaimer
